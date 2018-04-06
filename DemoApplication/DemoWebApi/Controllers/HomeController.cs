@@ -9,6 +9,10 @@ namespace DemoWebApi.Controllers
 {
     public class HomeController : ApiController
     {
+        /// <summary>
+        ///  Home
+        /// </summary>
+        /// <returns></returns>
         public IHttpActionResult Get()
         {
             return Ok("Home");
