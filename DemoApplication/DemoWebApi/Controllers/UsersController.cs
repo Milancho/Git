@@ -5,20 +5,25 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using DemoWebApi.Infrastructure;
+using DemoWebApi.Services;
 
 namespace DemoWebApi.Controllers
 {
-    public class UsersController : ApiController
+    public class UsersController : GenericController
     {
+        private readonly UsersService _usersService;
+        public UsersController()
+        {
+            _usersService = new UsersService();
+        }
+
         /// <summary>
         /// List of Users
         /// </summary>
         /// <returns></returns>
         public IHttpActionResult Get()
         {
-            var db = new MyDbContext();
-            var users = db.Users.ToList();
-            return Ok(users);
+            return Ok(_usersService.Get());
         }
     }
 }
