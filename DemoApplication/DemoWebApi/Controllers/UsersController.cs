@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using DemoWebApi.Infrastructure;
 
 namespace DemoWebApi.Controllers
 {
@@ -15,7 +16,9 @@ namespace DemoWebApi.Controllers
         /// <returns></returns>
         public IHttpActionResult Get()
         {
-            return Ok("User");
+            var db = new MyDbContext();
+            var users = db.Users.ToList();
+            return Ok(users);
         }
     }
 }
