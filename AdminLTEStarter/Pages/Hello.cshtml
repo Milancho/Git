@@ -1,0 +1,11 @@
+﻿@page
+@model AdminLTEStarter.Pages.HelloModel
+@{
+    Layout = "~/Pages/Shared/AdminLTE/_Layout.cshtml";
+    <h1>Hello friend</h1>
+
+    for (int i = 0; i < 5; i++)
+    {
+        <p>Number: @i</p>
+    }
+}
