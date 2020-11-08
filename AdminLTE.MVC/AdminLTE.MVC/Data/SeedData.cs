@@ -27,7 +27,8 @@ namespace AdminLTE.MVC.Data
                     Title = "When Harry Met Sally",
                     ReleaseDate = DateTime.Parse("1989-2-12"),
                     Genre = "Romantic Comedy",
-                    Price = 7.99M
+                    Price = 7.99M,
+                    Rating = "R",
                 },
 
                 new Movie
@@ -35,7 +36,8 @@ namespace AdminLTE.MVC.Data
                     Title = "Ghostbusters ",
                     ReleaseDate = DateTime.Parse("1984-3-13"),
                     Genre = "Comedy",
-                    Price = 8.99M
+                    Price = 8.99M,
+                    Rating = "R",
                 },
 
                 new Movie
