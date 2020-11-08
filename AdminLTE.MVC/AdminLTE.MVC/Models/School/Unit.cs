@@ -13,6 +13,9 @@ namespace AdminLTE.MVC.Models.School
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
+
+        public string Description { get; set; }
+
         [Required]
         public Course Course { get; set; }
         public List<Exercise> ExerciseList { get; set; }
