@@ -6,54 +6,82 @@
         <span class="brand-text font-weight-light">AdminLTE 3</span>
     </a>
     <div class="sidebar">
-@if (User.Identity.IsAuthenticated)
-{
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-            <img src="~/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info">
-            <a href="#" class="d-block">Hi, @User.Identity.Name </a>
-        </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+    <div class="image">
+        <img src="~/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
     </div>
-}
+    <div class="info">
+        <a href="#" class="d-block">Hi, @User.Identity.Name </a>
+    </div>
+</div> }
 else
 {
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="info">
-            <a href="#" class="d-block">Hi, Visitor</a>
-        </div>
+<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+    <div class="info">
+        <a href="#" class="d-block">Hi, Visitor</a>
     </div>
-}
+</div>}
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item ">
-                    <a asp-controller="Home" asp-action="Index" class="nav-link @Url.MakeActiveClass("home","index")">
+                    <a asp-controller="Exercises" asp-action="Report" class="nav-link @Url.MakeActiveClass("exercises","index")">
                         <i class="nav-icon fas fa-home"></i>
                         <p>
                             Home
                         </p>
                     </a>
                 </li>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <li class="nav-item ">
-                        <a asp-controller="Home" asp-action="Privacy" class="nav-link @Url.MakeActiveClass("home","privacy")">
-                            <i class="nav-icon fas fa-lock"></i>
+
+
+                @*<li class="nav-item has-treeview">
+                        <a is-active-page asp-area="Mail" asp-page="/Compose" class="nav-link">
+                            <i class="nav-icon fas fa-mail-bulk"></i>
                             <p>
-                                Privacy
+                                Mail
+                                <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
-                    </li>
-                }
-                <li class="nav-item ">
-                    <a asp-controller="Movies" asp-action="Index" class="nav-link @Url.MakeActiveClass("movies","index")">
-                        <i class="nav-icon fas fa-film"></i>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a is-active-page asp-area="Mail" asp-page="/Compose" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Compose Mail</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>*@
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                <li class="nav-header">Settings</li>
+                <li class="nav-item">
+                    <a asp-controller="Courses" asp-action="Index" class="nav-link @Url.MakeActiveClass("courses","index")">
+                        <i class="nav-icon fas fa-users-cog"></i>
                         <p>
-                            Movies
+                            Manage Courses
                         </p>
                     </a>
                 </li>
+
+                <li class="nav-item ">
+                    <a asp-controller="Units" asp-action="Index" class="nav-link @Url.MakeActiveClass("units","index")">
+                        <i class="nav-icon fas fa-home"></i>
+                        <p>
+                            Manage Units
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a asp-controller="Exercises" asp-action="Index" class="nav-link @Url.MakeActiveClass("exercises","index")">
+                        <i class="nav-icon fas fa-home"></i>
+                        <p>
+                            Manage Exercises
+                        </p>
+                    </a>
+                </li>
+                }
             </ul>
         </nav>
     </div>

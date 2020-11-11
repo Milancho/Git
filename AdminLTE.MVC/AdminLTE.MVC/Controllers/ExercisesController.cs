@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AdminLTE.MVC.Data;
 using AdminLTE.MVC.Models.School;
+using AdminLTE.MVC.ViewModel;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace AdminLTE.MVC.Controllers
 {
@@ -22,7 +24,36 @@ namespace AdminLTE.MVC.Controllers
         // GET: Exercises
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Exercise.ToListAsync());
+            var data = await _context.Exercise
+                .OrderBy(x => x.Unit.Course.Id).ThenBy(x => x.Unit.Id).ThenBy(x => x.Id)
+                .Select(item => new ExerciseViewModel()
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    UnitId = item.Unit.Id,
+                    Unit = item.Unit.Name,
+                    CourseId = item.Unit.Course.Id,
+                    Course = item.Unit.Course.Name
+                }).ToListAsync();
+
+            return View(data);
+        }
+
+        public async Task<IActionResult> Report()
+        {
+            var data = await _context.Exercise
+                .OrderBy(x => x.Unit.Course.Id).ThenBy(x => x.Unit.Id).ThenBy(x => x.Id)
+                .Select(item => new ExerciseViewModel()
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    UnitId = item.Unit.Id,
+                    Unit = item.Unit.Name,
+                    CourseId = item.Unit.Course.Id,
+                    Course = item.Unit.Course.Name
+                }).ToListAsync();
+
+            return View(data);
         }
 
         // GET: Exercises/Details/5
