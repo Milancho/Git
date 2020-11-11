@@ -39,20 +39,9 @@ namespace AdminLTE.MVC.Controllers
             return View(data);
         }
 
-        public async Task<IActionResult> Report()
+        public async Task<IActionResult> Report(int id)
         {
-            var data = await _context.Exercise
-                .OrderBy(x => x.Unit.Course.Id).ThenBy(x => x.Unit.Id).ThenBy(x => x.Id)
-                .Select(item => new ExerciseViewModel()
-                {
-                    Id = item.Id,
-                    Name = item.Name,
-                    UnitId = item.Unit.Id,
-                    Unit = item.Unit.Name,
-                    CourseId = item.Unit.Course.Id,
-                    Course = item.Unit.Course.Name
-                }).ToListAsync();
-
+            var data = await _context.Exercise.Where(x=>x.Unit.Id == id).ToListAsync();
             return View(data);
         }
 
