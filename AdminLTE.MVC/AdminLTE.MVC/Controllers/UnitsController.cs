@@ -26,6 +26,19 @@ namespace AdminLTE.MVC.Controllers
         }
 
         // GET: Units/Details/5
+        public async Task<IActionResult> Report(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var units = await _context.Unit.Where(m => m.Course.Id == id).ToListAsync();
+            
+            return View(units);
+        }
+
+        // GET: Units/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
