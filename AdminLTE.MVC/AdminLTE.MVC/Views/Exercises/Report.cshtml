@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AdminLTE.MVC.Models.School.Exercise>
+﻿@model AdminLTE.MVC.ViewModel.ExerciseReportViewModel
 
 @{
     ViewData["Title"] = "Exercises";
@@ -10,12 +10,12 @@
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.ExerciseList[0].Name)
         </th>
     </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
+    @foreach (var item in Model.ExerciseList)
     {
         <tr>
             <td>
@@ -26,5 +26,5 @@
     </tbody>
 </table>
 <div>
-    <a asp-controller="Units" asp-action="Report">Back to Units</a>
+    <a asp-controller="Units" asp-action="Report" asp-route-id="@Model.UnitId" asp-route-source="exercise">Back to Units</a>
 </div>

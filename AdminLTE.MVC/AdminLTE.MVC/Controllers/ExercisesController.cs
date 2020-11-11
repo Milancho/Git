@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AdminLTE.MVC.Data;
 using AdminLTE.MVC.Models.School;
 using AdminLTE.MVC.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Features;
 
 namespace AdminLTE.MVC.Controllers
@@ -39,9 +40,14 @@ namespace AdminLTE.MVC.Controllers
             return View(data);
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Report(int id)
         {
-            var data = await _context.Exercise.Where(x=>x.Unit.Id == id).ToListAsync();
+            var data = new ExerciseReportViewModel
+            {
+                ExerciseList = await _context.Exercise.Where(x => x.Unit.Id == id).ToListAsync(), UnitId = id
+            };
+
             return View(data);
         }
 

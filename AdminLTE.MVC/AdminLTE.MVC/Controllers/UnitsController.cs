@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AdminLTE.MVC.Data;
 using AdminLTE.MVC.Models.School;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AdminLTE.MVC.Controllers
 {
@@ -26,14 +27,27 @@ namespace AdminLTE.MVC.Controllers
         }
 
         // GET: Units/Details/5
-        public async Task<IActionResult> Report(int? id)
+        [AllowAnonymous]
+        public async Task<IActionResult> Report(int? id, string source)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var units = await _context.Unit.Where(m => m.Course.Id == id).ToListAsync();
+            var units = new List<Unit>();
+
+            if (source == "course")
+            {
+                 units = await _context.Unit.Where(m => m.Course.Id == id).ToListAsync();
+            }
+            if (source == "exercise")
+            {
+                var unitId = id;
+                var unit = await _context.Unit.Include(x=>x.Course).FirstOrDefaultAsync(x => x.Id == unitId);
+                var course = await _context.Course.FirstOrDefaultAsync(x => x.Id == unit.Course.Id);
+                units = await _context.Unit.Where(m => m.Course.Id == course.Id).ToListAsync();
+            }
             
             return View(units);
         }
