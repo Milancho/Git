@@ -72,7 +72,7 @@ namespace AdminLTE.MVC.Controllers
         }
 
         // GET: Units/Create
-        public async Task< IActionResult> Create()
+        public async Task<IActionResult> Create()
         {
             var item = new UnitViewModel();
             item.Courses = await _context.Course.Select(n => new SelectListItem
@@ -119,7 +119,21 @@ namespace AdminLTE.MVC.Controllers
             {
                 return NotFound();
             }
-            return View(unit);
+
+            var item = new UnitViewModel
+            {
+                Id = unit.Id,
+                CourseId = unit.CourseId,
+                Name = unit.Name,
+                Description = unit.Description,
+                Courses = await _context.Course.Select(n => new SelectListItem
+                {
+                    Value = Convert.ToString(n.Id),
+                    Text = n.Name
+                }).ToListAsync()
+            };
+
+            return View(item);
         }
 
         // POST: Units/Edit/5
