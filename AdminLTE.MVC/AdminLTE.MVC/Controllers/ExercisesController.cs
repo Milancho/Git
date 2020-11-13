@@ -45,7 +45,8 @@ namespace AdminLTE.MVC.Controllers
         {
             var data = new ExerciseReportViewModel
             {
-                ExerciseList = await _context.Exercise.Where(x => x.Unit.Id == id).ToListAsync(), UnitId = id
+                ExerciseList = await _context.Exercise.Where(x => x.Unit.Id == id).ToListAsync(),
+                UnitId = id
             };
 
             return View(data);
@@ -70,9 +71,16 @@ namespace AdminLTE.MVC.Controllers
         }
 
         // GET: Exercises/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var item = new ExerciseViewModel();
+            item.Units = await _context.Unit.Include(x => x.Course).Select(n => new SelectListItem()
+            {
+                Value = Convert.ToString(n.Id),
+                Text = $"{n.Course.Name} - {n.Name}"
+            }).ToListAsync();
+
+            return View(item);
         }
 
         // POST: Exercises/Create
@@ -80,7 +88,7 @@ namespace AdminLTE.MVC.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Exercise exercise)
+        public async Task<IActionResult> Create([Bind("Id,Name,UnitId")] Exercise exercise)
         {
             if (ModelState.IsValid)
             {
@@ -104,7 +112,19 @@ namespace AdminLTE.MVC.Controllers
             {
                 return NotFound();
             }
-            return View(exercise);
+
+            var item = new ExerciseViewModel();
+            item.Id = exercise.Id;
+            item.Name = exercise.Name;
+            item.UnitId = exercise.UnitId;
+            item.Units = await _context.Unit.Include(x=>x.Course).Select(n => new SelectListItem()
+            {
+                Value = Convert.ToString(n.Id),
+                Text = $"{n.Course.Name} - {n.Name}"
+            }).ToListAsync();
+
+            return View(item);
+
         }
 
         // POST: Exercises/Edit/5
@@ -112,7 +132,7 @@ namespace AdminLTE.MVC.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Exercise exercise)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,UnitId")] Exercise exercise)
         {
             if (id != exercise.Id)
             {

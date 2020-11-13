@@ -14,6 +14,7 @@ namespace AdminLTE.MVC.Models.School
         [Required]
         public string Name { get; set; }
         [Required]
+        public int UnitId { get; set; }
         public Unit Unit { get; set; }
     }
 }

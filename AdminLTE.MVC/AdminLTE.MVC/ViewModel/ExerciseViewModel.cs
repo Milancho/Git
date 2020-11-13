@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.AccessControl;
@@ -16,6 +17,8 @@ namespace AdminLTE.MVC.ViewModel
 
         public int UnitId { get; set; }
         public string Unit { get; set; }
+
+        public List<SelectListItem> Units { get; set; }
 
     }
 }
