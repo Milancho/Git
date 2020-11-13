@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AdminLTE.MVC.Data;
 using AdminLTE.MVC.Models.School;
 using Microsoft.AspNetCore.Authorization;
+using AdminLTE.MVC.ViewModel;
 
 namespace AdminLTE.MVC.Controllers
 {
@@ -39,16 +40,16 @@ namespace AdminLTE.MVC.Controllers
 
             if (source == "course")
             {
-                 units = await _context.Unit.Where(m => m.Course.Id == id).ToListAsync();
+                units = await _context.Unit.Where(m => m.Course.Id == id).ToListAsync();
             }
             if (source == "exercise")
             {
                 var unitId = id;
-                var unit = await _context.Unit.Include(x=>x.Course).FirstOrDefaultAsync(x => x.Id == unitId);
+                var unit = await _context.Unit.Include(x => x.Course).FirstOrDefaultAsync(x => x.Id == unitId);
                 var course = await _context.Course.FirstOrDefaultAsync(x => x.Id == unit.Course.Id);
                 units = await _context.Unit.Where(m => m.Course.Id == course.Id).ToListAsync();
             }
-            
+
             return View(units);
         }
 
@@ -71,9 +72,16 @@ namespace AdminLTE.MVC.Controllers
         }
 
         // GET: Units/Create
-        public IActionResult Create()
+        public async Task< IActionResult> Create()
         {
-            return View();
+            var item = new UnitViewModel();
+            item.Courses = await _context.Course.Select(n => new SelectListItem
+            {
+                Value = Convert.ToString(n.Id),
+                Text = n.Name
+            }).ToListAsync();
+
+            return View(item);
         }
 
         // POST: Units/Create
@@ -81,11 +89,17 @@ namespace AdminLTE.MVC.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Unit unit)
+        public async Task<IActionResult> Create([Bind("Id,Name,CourseId")] UnitViewModel unit)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(unit);
+                var newUnit = new Unit()
+                {
+                    Name = unit.Name,
+                    Description = unit.Description,
+                    CourseId = unit.CourseId
+                };
+                _context.Add(newUnit);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
