@@ -7,6 +7,7 @@ using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using GeneratingPDF.Utility;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AdminLTE.MVC.Controllers
 {
@@ -19,6 +20,7 @@ namespace AdminLTE.MVC.Controllers
             _converter = converter;
         }
 
+        [AllowAnonymous]
         public IActionResult CreatePDF()
         {
             var globalSettings = new GlobalSettings

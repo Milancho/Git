@@ -5,7 +5,7 @@
 }
 
 <h1>Exercises</h1>
-<p><a asp-controller="PdfCreator" asp-action="CreatePDF" target="_blank">PDF</a></p>
+<p><a asp-controller="Exercises" asp-action="CreatePDF" asp-route-id="@Model.UnitId" target="_blank">PDF</a></p>
 
 <table class="table">
     <thead>

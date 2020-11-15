@@ -10,16 +10,23 @@ using AdminLTE.MVC.Models.School;
 using AdminLTE.MVC.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Features;
+using DinkToPdf;
+using GeneratingPDF.Utility;
+using DinkToPdf.Contracts;
+using System.IO;
+using System.Text;
 
 namespace AdminLTE.MVC.Controllers
 {
     public class ExercisesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConverter _converter;
 
-        public ExercisesController(ApplicationDbContext context)
+        public ExercisesController(ApplicationDbContext context, IConverter converter)
         {
             _context = context;
+            _converter = converter;
         }
 
         // GET: Exercises
@@ -117,7 +124,7 @@ namespace AdminLTE.MVC.Controllers
             item.Id = exercise.Id;
             item.Name = exercise.Name;
             item.UnitId = exercise.UnitId;
-            item.Units = await _context.Unit.Include(x=>x.Course).Select(n => new SelectListItem()
+            item.Units = await _context.Unit.Include(x => x.Course).Select(n => new SelectListItem()
             {
                 Value = Convert.ToString(n.Id),
                 Text = $"{n.Course.Name} - {n.Name}"
@@ -195,5 +202,79 @@ namespace AdminLTE.MVC.Controllers
         {
             return _context.Exercise.Any(e => e.Id == id);
         }
+
+        /// <summary>
+        /// Print exercises by Unit
+        /// </summary>
+        /// <param name="id">UnitId</param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        public async Task<IActionResult> CreatePDF(int id)
+        {
+            var globalSettings = new GlobalSettings
+            {
+                ColorMode = ColorMode.Color,
+                Orientation = Orientation.Portrait,
+                PaperSize = PaperKind.A4,
+                Margins = new MarginSettings { Top = 10 },
+                DocumentTitle = "PDF Report",
+                //Out = @"C:\Aspekt\tmp\Employee_Report.pdf"
+            };
+
+            var objectSettings = new ObjectSettings
+            {
+                PagesCount = true,
+                HtmlContent = await GetHTMLString(id),
+                WebSettings = { DefaultEncoding = "utf-8", UserStyleSheet = Path.Combine(Directory.GetCurrentDirectory(), "assets", "styles.css") },
+                HeaderSettings = { FontName = "Arial", FontSize = 9, Right = "Page [page] of [toPage]", Line = true },
+                FooterSettings = { FontName = "Arial", FontSize = 9, Line = true, Center = "Report Footer" }
+            };
+
+            var pdf = new HtmlToPdfDocument()
+            {
+                GlobalSettings = globalSettings,
+                Objects = { objectSettings }
+            };
+
+            //_converter.Convert(pdf);
+            var file = _converter.Convert(pdf);
+            return File(file, "application/pdf");
+
+        }
+
+        public async Task<string> GetHTMLString(int unitId)
+        {
+            var unit = await _context.Unit
+    .Include(x => x.ExerciseList)
+    .Include(x => x.Course)
+    .FirstOrDefaultAsync(x => x.Id == unitId);
+
+            var sb = new StringBuilder();
+            sb.AppendFormat(@"
+                        <html>
+                            <head>
+                            </head>
+                            <body>
+                                <div class='header'><h1>{0}</h1></div>
+                                <table align='center'>
+                                    <tr>
+                                        <th>Вежби</th>                                        
+                                    </tr>", unit.Course.Name + " - " + unit.Name);
+
+            foreach (var exercise in unit.ExerciseList)
+            {
+                sb.AppendFormat(@"<tr>
+                                    <td>{0}</td>                                    
+                                  </tr>", exercise.Name);
+            }
+
+            sb.Append(@"
+                                </table>
+                            </body>
+                        </html>");
+
+            return sb.ToString();
+        }
+
     }
 }
