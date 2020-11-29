@@ -5,14 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SpeechTherapist.Web.Areas.User.Controllers
+namespace SpeechTherapist.Web.Controllers
 {
     [AllowAnonymous]
-    [Area("user")]
-    public class HomeController : Controller
-    {
+    public class UserPanelController : Controller
+    {       
         public IActionResult Index()
         {
+            ViewBag.IsUserPanelClicked = true;
             return View();
         }
     }
