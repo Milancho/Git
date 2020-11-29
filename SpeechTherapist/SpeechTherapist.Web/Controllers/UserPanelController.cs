@@ -15,5 +15,12 @@ namespace SpeechTherapist.Web.Controllers
             ViewBag.IsUserPanelClicked = true;
             return View();
         }
+
+        public IActionResult Courses()
+        {
+            ViewBag.IsUserPanelClicked = true;
+            return View();
+        }
+
     }
 }
