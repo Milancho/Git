@@ -7,6 +7,8 @@ namespace Day01
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("SOLUTION 1:");
+
             var numbers = getNumbers();
             var tupleParOne = PartOne(numbers);
             Console.WriteLine("Part One:");
@@ -14,8 +16,11 @@ namespace Day01
 
             Console.WriteLine("Part Two:");
             var parTwo = PartTwo(numbers);
-            Console.WriteLine($"{parTwo[0]}*{parTwo[1]}*{parTwo[2]} ={parTwo[0] * parTwo[1] * parTwo[2]}");
+            Console.WriteLine($"{parTwo[0]}*{parTwo[1]}*{parTwo[2]}={parTwo[0] * parTwo[1] * parTwo[2]}");
 
+            Console.WriteLine("SOLUTION 2:");
+            Console.WriteLine(PartOneV2(numbers).ToString());
+            Console.WriteLine(PartTwoV2(numbers).ToString());
         }
 
         static List<int> getNumbers()
@@ -53,8 +58,6 @@ namespace Day01
                 {
                     for (int k = j + 1; k < numbers.Count(); k++)
                     {
-
-
                         if (numbers[i] + numbers[j] + numbers[k] == 2020)
                         {
                             n1 = numbers[i];
@@ -66,5 +69,29 @@ namespace Day01
             }
             return new List<int>() { n1, n2, n3 };
         }
+
+        // SOLUTION 2
+        static long PartOneV2(List<int> numbers)
+        {
+            return (
+                    from x in numbers
+                    let y = 2020 - x
+                    where numbers.Contains(y)
+                    select x * y
+                                    ).First();
+        }
+
+        // SOLUTION 2
+        static long PartTwoV2(List<int> numbers)
+        {
+            return (
+                    from x in numbers
+                    from y in numbers
+                    let z = 2020 - x - y
+                    where numbers.Contains(z)
+                    select x * y * z
+                                    ).First();
+        }
+
     }
 }
