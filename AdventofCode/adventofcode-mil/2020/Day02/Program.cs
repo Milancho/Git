@@ -5,6 +5,9 @@ using System.Text.RegularExpressions;
 
 namespace Day02
 {
+    ///
+    /// Password Philosophy
+    ///
     class Program
     {
         static void Main(string[] args)
