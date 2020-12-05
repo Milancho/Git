@@ -7,13 +7,12 @@ namespace Day01
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("SOLUTION 1:");
-
             var numbers = getNumbers();
+
+            Console.WriteLine("SOLUTION 1:");
             var tupleParOne = PartOne(numbers);
             Console.WriteLine("Part One:");
             Console.WriteLine($"{tupleParOne.Item1}*{tupleParOne.Item2}={tupleParOne.Item1 * tupleParOne.Item2}");
-
             Console.WriteLine("Part Two:");
             var parTwo = PartTwo(numbers);
             Console.WriteLine($"{parTwo[0]}*{parTwo[1]}*{parTwo[2]}={parTwo[0] * parTwo[1] * parTwo[2]}");
