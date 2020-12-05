@@ -1,4 +1,4 @@
-original source: https://adventofcode.com/2020/day/2
+original source: https://adventofcode.com/2020/day/2 (dotnet run --project ./Day02/Day02.csproj)
 
 --- Day 2: Password Philosophy ---
 Your flight departs in a few days from the coastal airport; the easiest way down to the coast from here is via toboggan.
