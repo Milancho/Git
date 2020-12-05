@@ -10,8 +10,7 @@ namespace Day02
         static void Main(string[] args)
         {
             Console.WriteLine("Solution1");
-            Solution1_PartOne();
-            Console.WriteLine("Solution2");
+            Solution1_PartOne();        
             Solution1_PartTwo();
         }
 
@@ -20,20 +19,19 @@ namespace Day02
             var i = 0;
             foreach (var line in Lines())
             {
-                var s3 = line.Split(' ');
+                var parts = line.Split(' ');
 
-                var policyPolicy = s3[0];
-                var part2 = s3[1];
-                var password = s3[2];
+                var part1 = parts[0];
+                var range = part1.Split('-').Select(int.Parse).ToList();
+                var min = range[0];
+                var max = range[1];
 
-                var leastMost = policyPolicy.Split('-').Select(int.Parse).ToList();
-                var least = leastMost[0];
-                var most = leastMost[1];
+                var letter = parts[1][0];                
+                var password = parts[2];
 
-                var letter = part2[0];
                 var counter = password.Count(c => c == letter);
 
-                if (counter >= least && counter <= most)
+                if (counter >= min && counter <= max)
                 {
                     i++;
                 }
@@ -46,17 +44,15 @@ namespace Day02
             var i = 0;
             foreach (var line in Lines())
             {
-                var s3 = line.Split(' ');
+                var parts = line.Split(' ');
 
-                var policyPolicy = s3[0];
-                var part2 = s3[1];
-                var password = s3[2];
+                var part1 = parts[0];
+                var range = part1.Split('-').Select(int.Parse).ToList();
+                var posOne = range[0];
+                var posThree = range[1];
 
-                var policyList = policyPolicy.Split('-').Select(int.Parse).ToList();
-                var posOne = policyList[0];
-                var posThree = policyList[1];
-
-                var letter = part2[0];
+                var letter = parts[1][0];                
+                var password = parts[2];
 
                 var firstMatch = letter == password[posOne - 1];
                 var secondMatch = letter == password[posThree - 1];
@@ -71,7 +67,7 @@ namespace Day02
 
         static string[] Lines()
         {
-            string text = System.IO.File.ReadAllText(@"Day02\input.in"); 
+            string text = System.IO.File.ReadAllText(@"Day02\input.in");
             return text.Split('\n');
         }
 
