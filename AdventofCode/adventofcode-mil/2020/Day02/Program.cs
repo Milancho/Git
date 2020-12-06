@@ -11,7 +11,7 @@ namespace Day02
     class Program
     {
         // static string path = @"Day02\input.in";
-         static string path = @"input.in";
+        static string path = @"input.in";
         static void Main(string[] args)
         {
             Console.WriteLine("Solution1");
@@ -92,5 +92,29 @@ namespace Day02
                var ch = parts[1][0];
                return new PasswordEntry(range[0], range[1], ch, parts[2]);
            }).Count(isValid);
+
+
+        // Solution 3
+        public record PasswordPolicy(char Char, int Min, int Max);
+
+        public (string password, PasswordPolicy policy) ParseInput(string input)
+        {
+            var match = new Regex(@"(\d*)-(\d*) (\w): (.*)").Match(input);
+            return new(match.Groups[4].ToString(), new PasswordPolicy(
+              Convert.ToChar(match.Groups[3]),
+              Convert.ToInt32(match.Groups[2]),
+              Convert.ToInt32(match.Groups[1])));
+        }
+
+        public bool IsPasswordValid(string password, PasswordPolicy policy)
+        {
+            var policyCharCount = password.ToCharArray().Count(x => x == policy.Char);
+            return policyCharCount >= policy.Min && policyCharCount <= policy.Max;
+        }
+        public int Part1(string[] inputs) =>
+         inputs.Select(ParseInput).Count(x => IsPasswordValid(x.password, x.policy));
+
+ public bool IsPasswordValid2(string password, PasswordPolicy policy)
+            => password[policy.Min-1] == policy.Char ^ password[policy.Max-1] == policy.Char;
     }
 }
