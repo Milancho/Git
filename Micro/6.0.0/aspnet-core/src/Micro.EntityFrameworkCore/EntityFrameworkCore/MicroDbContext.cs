@@ -2,6 +2,7 @@
 using Abp.Zero.EntityFrameworkCore;
 using Micro.Authorization.Roles;
 using Micro.Authorization.Users;
+using Micro.Entities;
 using Micro.MultiTenancy;
 using Micro.Tasks;
 
@@ -11,7 +12,7 @@ namespace Micro.EntityFrameworkCore
     {
         /* Define a DbSet for each entity of the application */
         public DbSet<Task> Tasks { get; set; }
-
+        public DbSet<Person> People { get; set; }
         public MicroDbContext(DbContextOptions<MicroDbContext> options)
             : base(options)
         {
